@@ -1,18 +1,21 @@
+using System.Buffers.Text;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Jws.Signature;
+namespace Jws.Signature.Signing;
 
 internal class SignDataRsaService : ISignDataService
 {
     private readonly RSA _privateKey;
 
-    public SignDataRsaService() // todo вынести из конструктора?
+    public SignDataRsaService(string privateKey) // todo вынести из конструктора?
     {
+        // todo inject service-getter for private key
+        
         _privateKey = RSA.Create();
 
         // Load your private key here (this is just a placeholder)
-        string privateKey = "-----BEGIN RSA PRIVATE KEY-----\\n...";
+        
         _privateKey.ImportFromPem(privateKey.ToCharArray());
     }
 

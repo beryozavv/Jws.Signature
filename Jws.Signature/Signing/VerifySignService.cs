@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Jws.Signature;
+namespace Jws.Signature.Signing;
 
 internal class VerifySignService : IVerifySignService
 {
@@ -9,6 +9,8 @@ internal class VerifySignService : IVerifySignService
     
     public VerifySignService(string publicKeyPem) //todo вынести?
     {
+        // todo inject service-getter for public key
+        
         _publicKey = RSA.Create();
         _publicKey.ImportFromPem(publicKeyPem.ToCharArray());
     }

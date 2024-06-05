@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace Jws.Signature;
+namespace Jws.Signature.Signing;
 
 internal static class SigningConstants
 {
