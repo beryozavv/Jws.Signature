@@ -1,4 +1,4 @@
-namespace Jws.Signature;
+namespace Jws.Signature.Signing;
 
 public interface IVerifySignService
 {

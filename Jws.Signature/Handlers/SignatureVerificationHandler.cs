@@ -36,7 +36,7 @@ public class SignatureVerificationHandler : DelegatingHandler
         }
 
         // Remove the signature from the response content
-        response.Content = new StringContent(originalContent, Encoding.UTF8, response.Content.Headers.ContentType.MediaType);
+        response.Content = new StringContent(originalContent, Encoding.UTF8, response.Content.Headers.ContentType?.MediaType);
 
         return response;
     }
