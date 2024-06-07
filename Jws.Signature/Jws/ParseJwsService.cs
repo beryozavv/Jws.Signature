@@ -1,9 +1,10 @@
 using System.Text.Json;
 using Jws.Signature.Signing;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Jws.Signature.Jws;
 
-internal class ParseJwsService : IParseJwsService
+internal sealed class ParseJwsService : IParseJwsService
 {
     private readonly IVerifySignService _verifySignService;
 
@@ -26,8 +27,8 @@ internal class ParseJwsService : IParseJwsService
         }
 
         var payloadBase64 = parts[1];
-        //Convert.TryFromBase64String(payloadBase64, out var span,out var ) todo
-        var payload = Convert.FromBase64String(payloadBase64);
+
+        var payload = Base64UrlTextEncoder.Decode(payloadBase64);
         var result = JsonSerializer.Deserialize<T>(payload);
 
         if (result == null)
