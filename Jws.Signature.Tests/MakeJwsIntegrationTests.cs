@@ -40,7 +40,7 @@ public class MakeJwsIntegrationTests
 
         var makeJwsService = new MakeJwsService(GetSignDataService());
 
-        var jws = makeJwsService.MakeJws(testEntity, "RS256");
+        var jws = makeJwsService.MakeJws(testEntity);
 
         _outputHelper.WriteLine(jws);
 

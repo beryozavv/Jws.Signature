@@ -1,4 +1,4 @@
-using System.Buffers.Text;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -11,11 +11,11 @@ internal class SignDataRsaService : ISignDataService
     public SignDataRsaService(string privateKey) // todo вынести из конструктора?
     {
         // todo inject service-getter for private key
-        
+
         _privateKey = RSA.Create();
 
         // Load your private key here (this is just a placeholder)
-        
+
         _privateKey.ImportFromPem(privateKey.ToCharArray());
     }
 
@@ -28,6 +28,14 @@ internal class SignDataRsaService : ISignDataService
     {
         var dataBytes = Encoding.UTF8.GetBytes(data);
         var signedBytes = _privateKey.SignData(dataBytes, SigningConstants.HashAlgorithmName, SigningConstants.Padding);
-        return Convert.ToBase64String(signedBytes);
+
+        var result = Base64UrlTextEncoder.Encode(signedBytes);
+        return result;
+        // var base64String = Convert.ToBase64String();
+        //
+        //
+        // return RemoveBase64Padding(base64String);
     }
+
+    public string HashAlg => "RS256";
 }

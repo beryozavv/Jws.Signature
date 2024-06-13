@@ -38,7 +38,7 @@ public class MakeJwsUnitTests
 
         var makeJwsService = new MakeJwsService(GetSignDataServiceMock());
 
-        var jws = makeJwsService.MakeJws(testEntity, "RS256");
+        var jws = makeJwsService.MakeJws(testEntity);
 
         _outputHelper.WriteLine(jws);
 

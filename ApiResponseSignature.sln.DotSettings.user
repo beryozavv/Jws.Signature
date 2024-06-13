@@ -4,5 +4,6 @@
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::4BA764B4-6F15-4ADB-AD6F-A28FE4296B31::net6.0::Jws.Signature.Tests.MakeJwsIntegrationTests.MakeJwsTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::4BA764B4-6F15-4ADB-AD6F-A28FE4296B31::net6.0::Jws.Signature.Tests.MakeJwsUnitTests.MakeJwsTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4BA764B4-6F15-4ADB-AD6F-A28FE4296B31::net6.0::Jws.Signature.Tests.SigningIntegrationTests.TestJwsSign&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

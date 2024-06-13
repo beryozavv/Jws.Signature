@@ -8,4 +8,6 @@ public interface ISignDataService
     /// <param name="data">string data in UTF8</param>
     /// <returns>The Base64 encoded signature for the specified data</returns>
     string SignData(string data);
+    
+    string HashAlg { get; }
 }

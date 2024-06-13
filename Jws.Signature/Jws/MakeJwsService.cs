@@ -13,9 +13,9 @@ internal class MakeJwsService : IMakeJwsService
         _signDataService = signDataService;
     }
 
-    public string MakeJws(object payload, string protectedHeaderAlg = "RS256")
+    public string MakeJws(object payload)
     {
-        var headerBytes = Encoding.UTF8.GetBytes($"{{\"alg\":\"{protectedHeaderAlg}\"}}");
+        var headerBytes = Encoding.UTF8.GetBytes($"{{\"alg\":\"{_signDataService.HashAlg}\"}}");
 
         var payloadBytes = JsonSerializer.SerializeToUtf8Bytes(payload);
 
