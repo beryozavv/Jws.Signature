@@ -19,9 +19,9 @@ public class SignatureVerificationHandler : DelegatingHandler
 
         var content = await response.Content.ReadAsStringAsync();
 
-        var decodedResponse = _parseJwsService.ParseJws<string>(content);
+        var decodedResponse = _parseJwsService.ParseJws<object>(content);
 
-        response.Content = new StringContent(decodedResponse, Encoding.UTF8, response.Content.Headers.ContentType?.MediaType);
+        response.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(decodedResponse), Encoding.UTF8, response.Content.Headers.ContentType?.MediaType);
 
         return response;
     }

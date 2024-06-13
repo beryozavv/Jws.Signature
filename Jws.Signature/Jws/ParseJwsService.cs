@@ -23,7 +23,7 @@ internal sealed class ParseJwsService : IParseJwsService
 
         if (!_verifySignService.VerifySign(data, signature))
         {
-            throw new InvalidOperationException("todo");
+            throw new InvalidOperationException("Verification failed.");
         }
 
         var payloadBase64 = parts[1];
@@ -33,7 +33,7 @@ internal sealed class ParseJwsService : IParseJwsService
 
         if (result == null)
         {
-            throw new InvalidOperationException("todo");
+            throw new InvalidOperationException($"Cannot deserialize payload to type {typeof(T).Name}.");
         }
 
         return result;

@@ -20,8 +20,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseResponseSigning();
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

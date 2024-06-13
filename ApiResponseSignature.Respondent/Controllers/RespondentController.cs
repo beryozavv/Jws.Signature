@@ -1,3 +1,4 @@
+using Jws.Signature.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiResponseSignature.Respondent.Controllers
@@ -7,6 +8,7 @@ namespace ApiResponseSignature.Respondent.Controllers
     public class RespondentController : ControllerBase
     {
         [HttpGet]
+        [SignResponseFilter]
         public ActionResult<object> Get()
         {
             return Ok(new

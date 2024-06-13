@@ -11,13 +11,6 @@ internal sealed class SignDataRsaService : ISignDataService
 
     public SignDataRsaService(IPrivateKeyExtractor privateKeyExtractor) // todo вынести из конструктора?
     {
-        // todo inject service-getter for private key
-
-        //_privateKey = RSA.Create();
-        // Load your private key here (this is just a placeholder)
-
-        //_privateKey.ImportFromPem(privateKey.ToCharArray());
-
         _privateKey = privateKeyExtractor.GetKey();
     }
 

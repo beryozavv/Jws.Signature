@@ -11,11 +11,6 @@ internal sealed class VerifySignService : IVerifySignService
     
     public VerifySignService(IPublicKeyExtractor publicKeyExtractor) //todo вынести?
     {
-        // todo inject service-getter for public key
-
-        //_publicKey = RSA.Create();
-        //_publicKey.ImportFromPem(publicKeyPem.ToCharArray());
-
         _publicKey = publicKeyExtractor.GetKey();
     }
 
