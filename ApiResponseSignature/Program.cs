@@ -1,4 +1,6 @@
+using ApiResponseSignature.Sender.RefitClients;
 using Jws.Signature.Extensions;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,11 @@ builder.Services.AddHttpClient(
     {
         client.BaseAddress = new Uri("http://localhost:5678");
     })
+    .AddResponseVerifyingHandler();
+
+builder.Services
+    .AddRefitClient<IRespondenApi>()
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:5678"))
     .AddResponseVerifyingHandler();
 
 var app = builder.Build();
