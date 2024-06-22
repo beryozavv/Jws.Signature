@@ -13,7 +13,9 @@ namespace ApiResponseSignature.Respondent.Controllers
         {
             return Ok(new
             {
-                TestString = "Test"
+                TestNum = 180,
+                TestString = "Test",
+                TestDate = DateTime.Now
             });
         }
     }

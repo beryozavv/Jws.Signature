@@ -1,8 +1,7 @@
 using ApiResponseSignature.Sender.RefitClients;
 using Microsoft.AspNetCore.Mvc;
-using Refit;
 
-namespace ApiResponseSignature.Controllers;
+namespace ApiResponseSignature.Sender.Controllers;
 
 [ApiController]
 [Route("[controller]")]

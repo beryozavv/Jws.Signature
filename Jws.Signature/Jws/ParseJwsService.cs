@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json;
 using Jws.Signature.Signing;
 using Microsoft.AspNetCore.WebUtilities;
@@ -15,6 +16,19 @@ internal sealed class ParseJwsService : IParseJwsService
 
     public T ParseJws<T>(string jws)
     {
+        var payload = ParsePayload(jws);
+        var result = JsonSerializer.Deserialize<T>(payload);
+
+        if (result == null)
+        {
+            throw new InvalidOperationException($"Cannot deserialize payload to type {typeof(T).Name}.");
+        }
+
+        return result;
+    }
+
+    private byte[] ParsePayload(string jws)
+    {
         var lastIndexOfDot = jws.LastIndexOf('.');
         var data = jws.Substring(0, lastIndexOfDot);
 
@@ -29,13 +43,12 @@ internal sealed class ParseJwsService : IParseJwsService
         var payloadBase64 = parts[1];
 
         var payload = Base64UrlTextEncoder.Decode(payloadBase64);
-        var result = JsonSerializer.Deserialize<T>(payload);
+        return payload;
+    }
 
-        if (result == null)
-        {
-            throw new InvalidOperationException($"Cannot deserialize payload to type {typeof(T).Name}.");
-        }
-
-        return result;
+    public string GetSerializedResponse(string jws)
+    {
+        var payload = ParsePayload(jws);
+        return Encoding.UTF8.GetString(payload);
     }
 }

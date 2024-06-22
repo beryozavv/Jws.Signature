@@ -8,7 +8,6 @@ public class SignatureVerificationHandler : DelegatingHandler
     private readonly IParseJwsService _parseJwsService;
 
     public SignatureVerificationHandler(IParseJwsService parseJwsService)
-        : base()
     {
         _parseJwsService = parseJwsService;
     }
@@ -19,9 +18,9 @@ public class SignatureVerificationHandler : DelegatingHandler
 
         var content = await response.Content.ReadAsStringAsync();
 
-        var decodedResponse = _parseJwsService.ParseJws<object>(content);
+        var serializedResponse = _parseJwsService.GetSerializedResponse(content);
 
-        response.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(decodedResponse), Encoding.UTF8, response.Content.Headers.ContentType?.MediaType);
+        response.Content = new StringContent(serializedResponse, Encoding.UTF8, response.Content.Headers.ContentType?.MediaType);
 
         return response;
     }

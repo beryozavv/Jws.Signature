@@ -1,7 +1,6 @@
 ﻿using Jws.Signature.Jws;
 using Jws.Signature.KeyExtractor;
 using Jws.Signature.Signing;
-using Moq;
 using Xunit;
 using Xunit.Abstractions;
 
