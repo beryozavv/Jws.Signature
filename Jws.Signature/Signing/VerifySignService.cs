@@ -1,18 +1,17 @@
+using Jws.Signature.KeyExtractor;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Jws.Signature.Signing;
 
-internal class VerifySignService : IVerifySignService
+internal sealed class VerifySignService : IVerifySignService
 {
     private readonly RSA _publicKey;
     
-    public VerifySignService(string publicKeyPem) //todo вынести?
+    public VerifySignService(IPublicKeyExtractor publicKeyExtractor) //todo вынести?
     {
-        // todo inject service-getter for public key
-        
-        _publicKey = RSA.Create();
-        _publicKey.ImportFromPem(publicKeyPem.ToCharArray());
+        _publicKey = publicKeyExtractor.GetKey();
     }
 
     /// <summary>
@@ -24,8 +23,13 @@ internal class VerifySignService : IVerifySignService
     public bool VerifySign(string data, string signature)
     {
         var dataBytes = Encoding.UTF8.GetBytes(data);
-        var signatureBytes = Convert.FromBase64String(signature);
-        return _publicKey.VerifyData(dataBytes, signatureBytes, SigningConstants.HashAlgorithmName,
+
+        var signatureBytes = Base64UrlTextEncoder.Decode(signature);
+
+        return _publicKey.VerifyData(
+            dataBytes, 
+            signatureBytes,
+            SigningConstants.HashAlgorithmName,
             SigningConstants.Padding);
     }
 }

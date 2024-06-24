@@ -1,9 +1,11 @@
+using System.Text;
 using System.Text.Json;
 using Jws.Signature.Signing;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Jws.Signature.Jws;
 
-internal class ParseJwsService : IParseJwsService
+internal sealed class ParseJwsService : IParseJwsService
 {
     private readonly IVerifySignService _verifySignService;
 
@@ -14,6 +16,19 @@ internal class ParseJwsService : IParseJwsService
 
     public T ParseJws<T>(string jws)
     {
+        var payload = ParsePayload(jws);
+        var result = JsonSerializer.Deserialize<T>(payload);
+
+        if (result == null)
+        {
+            throw new InvalidOperationException($"Cannot deserialize payload to type {typeof(T).Name}.");
+        }
+
+        return result;
+    }
+
+    private byte[] ParsePayload(string jws)
+    {
         var lastIndexOfDot = jws.LastIndexOf('.');
         var data = jws.Substring(0, lastIndexOfDot);
 
@@ -22,19 +37,18 @@ internal class ParseJwsService : IParseJwsService
 
         if (!_verifySignService.VerifySign(data, signature))
         {
-            throw new InvalidOperationException("todo");
+            throw new InvalidOperationException("Verification failed.");
         }
 
         var payloadBase64 = parts[1];
-        //Convert.TryFromBase64String(payloadBase64, out var span,out var ) todo
-        var payload = Convert.FromBase64String(payloadBase64);
-        var result = JsonSerializer.Deserialize<T>(payload);
 
-        if (result == null)
-        {
-            throw new InvalidOperationException("todo");
-        }
+        var payload = Base64UrlTextEncoder.Decode(payloadBase64);
+        return payload;
+    }
 
-        return result;
+    public string GetSerializedResponse(string jws)
+    {
+        var payload = ParsePayload(jws);
+        return Encoding.UTF8.GetString(payload);
     }
 }

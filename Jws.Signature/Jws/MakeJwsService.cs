@@ -1,10 +1,11 @@
 using System.Text;
 using System.Text.Json;
 using Jws.Signature.Signing;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Jws.Signature.Jws;
 
-internal class MakeJwsService : IMakeJwsService
+internal sealed class MakeJwsService : IMakeJwsService
 {
     private readonly ISignDataService _signDataService;
 
@@ -19,8 +20,8 @@ internal class MakeJwsService : IMakeJwsService
 
         var payloadBytes = JsonSerializer.SerializeToUtf8Bytes(payload);
 
-        var headerBase64 = Convert.ToBase64String(headerBytes);
-        var payloadBase64 = Convert.ToBase64String(payloadBytes);
+        var headerBase64 = Base64UrlTextEncoder.Encode(headerBytes);
+        var payloadBase64 = Base64UrlTextEncoder.Encode(payloadBytes);
 
         var dataToSign = headerBase64 + '.' + payloadBase64;
 

@@ -1,22 +1,17 @@
-using System.Buffers.Text;
+using Jws.Signature.KeyExtractor;
+using Microsoft.AspNetCore.WebUtilities;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Jws.Signature.Signing;
 
-internal class SignDataRsaService : ISignDataService
+internal sealed class SignDataRsaService : ISignDataService
 {
     private readonly RSA _privateKey;
 
-    public SignDataRsaService(string privateKey) // todo вынести из конструктора?
+    public SignDataRsaService(IPrivateKeyExtractor privateKeyExtractor) // todo вынести из конструктора?
     {
-        // todo inject service-getter for private key
-        
-        _privateKey = RSA.Create();
-
-        // Load your private key here (this is just a placeholder)
-        
-        _privateKey.ImportFromPem(privateKey.ToCharArray());
+        _privateKey = privateKeyExtractor.GetKey();
     }
 
     /// <summary>
@@ -27,7 +22,12 @@ internal class SignDataRsaService : ISignDataService
     public string SignData(string data)
     {
         var dataBytes = Encoding.UTF8.GetBytes(data);
-        var signedBytes = _privateKey.SignData(dataBytes, SigningConstants.HashAlgorithmName, SigningConstants.Padding);
-        return Convert.ToBase64String(signedBytes);
+
+        var signedBytes = _privateKey.SignData(
+            dataBytes,
+            SigningConstants.HashAlgorithmName,
+            SigningConstants.Padding);
+
+        return Base64UrlTextEncoder.Encode(signedBytes);
     }
 }
